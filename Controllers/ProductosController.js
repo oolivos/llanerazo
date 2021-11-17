@@ -1,14 +1,27 @@
-const getAllProductos = (req, res) => {
-    res.send('Lista de Productos')
+const Producto = require('../Models/Producto')
+
+const getAllProductos = async (req, res) => {
+    //res.send('Lista de Productos')
+    return res.json(await Producto.find().populate('userId'))
 }
-const storeProductos = (req, res) => {
-    res.send('Guardar Producto')
+const storeProductos = async (req, res) => {
+    //res.send('Guardar Producto')
+    const producto = new Producto(req.body)
+    await producto.save()
+    res.json(producto)
 }
-const updateProducto = (req, res) => {
-    res.send('Actualizar Producto')
+const updateProducto = async (req, res) => {
+    //res.send('Actualizar Producto')
+    await Producto.findByIdAndUpdate(
+        req.params.id,
+        req.body
+    )
+    res.send('actualizado!')
 }
-const deleteProducto = (req, res) => {
-    res.send('Eliminar  Producto')
+const deleteProducto = async (req, res) => {
+    //res.send('Eliminar  Producto')
+    await Producto.findByIdAndDelete(req.params.id)
+    res.send('Eliminado!')
 }
 
 module.exports = {
